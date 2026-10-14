@@ -173,7 +173,7 @@
       var open = '<' + (canVote ? 'button type="button" data-action="vote"' : 'div') + ' class="opt' + (mine ? ' mine' : '') + '" data-choice="' + esc(c.id) + '">';
       html += open;
       if (!closed) {
-        html += '<span class="ring">' + (mine ? ICON_CHECK : '') + '</span>';
+        html += '<span class="vote-ring">' + (mine ? ICON_CHECK : '') + '</span>';
       }
       html += '<span class="name text-body">' + esc(c.label) + '</span>';
       if (d.show_counts) {
@@ -243,15 +243,17 @@
     show(askBtn, false);
     show(demoNote, false);
     if (mode === 'error') {
+      // Fixed copy, never the server's own text: what failed, that nothing
+      // is lost, and that Retry is there.
       var box = error.querySelector('p.text-body');
-      if (box && message) box.textContent = message;
+      if (box) box.textContent = 'Nothing you posted is lost. Check your connection and try again.';
     }
   }
 
   function load() {
     renderStates('loading');
     return api('/api/decisions').then(function (r) {
-      if (!r.ok) throw new Error(r.data.error || 'The questions could not be loaded.');
+      if (!r.ok) { renderStates('error'); return; }
       state.signed_in = !!r.data.signed_in;
       state.viewer_id = r.data.viewer_id || null;
       state.decisions = r.data.decisions || [];
@@ -265,8 +267,8 @@
       renderAll();
     }, function () {
       renderStates('error');
-    }).catch(function (err) {
-      renderStates('error', err.message);
+    }).catch(function () {
+      renderStates('error');
     });
   }
 
@@ -357,13 +359,14 @@
   var MAX_CHOICES = 8;
   var choiceFields = $('choice-fields');
 
-  function choiceRow(value) {
+  function choiceRow(value, n) {
     var row = document.createElement('div');
     row.className = 'frow';
     var input = document.createElement('input');
     input.className = 'field choice-input';
     input.maxLength = 80;
-    input.placeholder = 'e.g. Riverside pavilion';
+    input.placeholder = 'Choice ' + n;
+    input.setAttribute('aria-label', 'Choice ' + n);
     input.value = value || '';
     var rm = document.createElement('button');
     rm.className = 'quiet';
@@ -384,11 +387,11 @@
   }
 
   function initForm() {
-    choiceFields.appendChild(choiceRow(''));
-    choiceFields.appendChild(choiceRow(''));
+    choiceFields.appendChild(choiceRow('', 1));
+    choiceFields.appendChild(choiceRow('', 2));
     syncChoiceRows();
     $('add-choice').addEventListener('click', function () {
-      choiceFields.appendChild(choiceRow(''));
+      choiceFields.appendChild(choiceRow('', choiceFields.querySelectorAll('.frow').length + 1));
       syncChoiceRows();
       var rows = choiceFields.querySelectorAll('.choice-input');
       rows[rows.length - 1].focus();
@@ -410,8 +413,8 @@
           if (!r.ok) { err.textContent = r.data.error || 'The question could not be posted.'; err.hidden = false; return; }
           $('q-input').value = '';
           choiceFields.innerHTML = '';
-          choiceFields.appendChild(choiceRow(''));
-          choiceFields.appendChild(choiceRow(''));
+          choiceFields.appendChild(choiceRow('', 1));
+          choiceFields.appendChild(choiceRow('', 2));
           syncChoiceRows();
           closeForm();
           load();

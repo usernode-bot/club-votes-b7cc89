@@ -45,6 +45,10 @@ body {
 
 .card {background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
 
+/* Question cards sit in these two lists: keep a column's gap between them
+   so the borders do not run together. */
+#open-list, #closed-list {display:flex;flex-direction:column;gap:16px}
+
 .by {display:flex;justify-content:space-between;align-items:center}
 
 .opts {display:flex;flex-direction:column;border:1px solid rgb(var(--line));border-radius:10px;overflow:hidden}
@@ -57,9 +61,11 @@ body {
 
 .mine {box-shadow:inset 3px 0 0 rgb(var(--accent))}
 
-.ring {width:22px;height:22px;border-radius:50%;border:2px solid rgb(var(--line));flex:none;display:flex;align-items:center;justify-content:center}
+/* "vote-ring", not "ring": "ring" alone is a Tailwind utility (a pale blue
+   box-shadow glow) and the extractor picks the name up out of app.js. */
+.vote-ring {width:22px;height:22px;border-radius:50%;border:2px solid rgb(var(--line));flex:none;display:flex;align-items:center;justify-content:center}
 
-.mine .ring {border-color:rgb(var(--accent));background:rgb(var(--accent))}
+.mine .vote-ring {border-color:rgb(var(--accent));background:rgb(var(--accent))}
 
 .tally {display:flex;align-items:center;gap:6px;color:rgb(var(--tally))}
 
@@ -70,6 +76,10 @@ body {
 .foot {display:flex;align-items:center;gap:4px;border-top:1px solid rgb(var(--line));padding-top:4px;margin-bottom:-8px}
 
 .foot .grow {flex:1}
+
+/* The Close vote button sits between 0.875 rem text links: match its text
+   size and give it the row's 44 px so the footer reads level. */
+.foot .btn-secondary {font-size:.875rem;line-height:1.25rem;min-height:44px;padding:0 12px}
 
 .thread {display:flex;flex-direction:column;gap:12px;padding-top:4px}
 
