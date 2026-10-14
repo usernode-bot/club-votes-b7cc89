@@ -78,6 +78,7 @@
        classes, swap this link for the platform-hosted engine instead:
        <script src="/usernode-tailwind/v1/tailwind.js"></script> -->
   <link rel="stylesheet" href="/tailwind.css">
+  <link rel="stylesheet" href="/screens.css">
   <!-- The platform bridge, centrally hosted and loaded by RELATIVE path (the
        handler in server.js serves it under a plain "node server.js"; the
        platform's edge answers it everywhere else). Never vendor it and never
@@ -115,21 +116,64 @@
   <!-- (Named in prose on purpose: Tailwind compiles any class-name word in
        these files, comments included, and the starter should ship only the
        components its screen uses.) -->
-  <main class="mx-auto flex max-w-md flex-col gap-8 px-4 py-10">
+  <!-- usernode-spec-screens@1: the screens the spec drew, carried over by the platform as this
+       first version's starting point. Their styles are in public/screens.css.
+       Change them where behaviour needs it; do not redraw them. -->
+  <div data-spec-screen="1">
+    <div><div class="app">
+    <header class="top">
+    <h1 class="text-title">Club Votes</h1>
+    <button class="btn-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ask the club</button>
+    </header>
 
-    <!-- usernode-starter-notice@1 — starter-template messaging. When building
-         the user's real app, replace this whole screen and delete this block,
-         both sentinel comments included. -->
-    <section class="card flex flex-col items-start gap-3">
-      <div class="flex h-20 w-20 items-center justify-center rounded-2xl border border-line bg-ground text-title">🗳️</div>
-      <span class="rounded-full bg-raised px-3 py-1 text-small font-medium text-muted">Starter template</span>
-      <h1 class="text-title">Club Votes</h1>
-      <p class="text-body text-muted">Welcome to your new app! Everything on this screen is placeholder content that came with it.</p>
-      <p class="text-body text-muted">To change this app, ask Homeroom bot: tap the <strong class="font-semibold text-fg">Homeroom icon</strong>, then <strong class="font-semibold text-fg">Suggest an improvement</strong>. Describe what you'd like in plain English, and it will be turned into your real app.</p>
-    </section>
-    <!-- /usernode-starter-notice@1 -->
+    <p class="section-label">Open questions</p>
 
-    <p class="text-center text-small text-muted">Built on Homeroom. This template screen disappears once you build your real app.</p>
-  </main>
+    <article class="card">
+    <div class="by"><span class="text-small muted">You asked, 2 days ago</span><span class="text-small muted">9 votes</span></div>
+    <h2 class="text-heading">Where should we hold the spring kickoff?</h2>
+    <div class="opts">
+    <div class="opt mine"><span class="ring"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><span class="name text-body">Back room at Fern Street Library</span>
+    <span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16M22 3v16M1 16L26 5"/></svg><span class="count">5</span></span></div>
+    <div class="opt"><span class="ring"></span><span class="name text-body">Riverside pavilion</span>
+    <span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16"/></svg><span class="count">3</span></span></div>
+    <div class="opt"><span class="ring"></span><span class="name text-body">Juniper's Cafe upstairs</span>
+    <span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16"/></svg><span class="count">1</span></span></div>
+    </div>
+    <div class="foot"><button class="quiet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> 3 comments</button><span class="grow"></span><button class="btn-secondary text-small">Close vote</button><button class="quiet">Delete</button></div>
+    <div class="thread">
+    <div class="c"><span class="text-small"><b>Demo Ada</b> <span class="muted">yesterday</span></span><p class="text-body">The library room has the projector, so slides work there.</p></div>
+    <div class="c"><span class="text-small"><b>Demo Bram</b> <span class="muted">yesterday</span></span><p class="text-body">Pavilion is nicer if it stays dry, but it's a gamble in March.</p></div>
+    <div class="c"><span class="text-small"><b>You</b> <span class="muted">3 hours ago</span></span><p class="text-body">I'll book the library if it's still ahead on Friday.</p></div>
+    <div class="say"><input class="field" value="Add a comment"><button class="btn-secondary">Send</button></div>
+    </div>
+    </article>
+
+    <article class="card">
+    <div class="by"><span class="text-small muted">Demo Priya asked, 5 hours ago</span><button class="quiet">Report</button></div>
+    <h2 class="text-heading">What should our June outing be?</h2>
+    <div class="opts">
+    <div class="opt"><span class="ring"></span><span class="name text-body">Botanical garden walk</span></div>
+    <div class="opt"><span class="ring"></span><span class="name text-body">Pottery evening</span></div>
+    <div class="opt"><span class="ring"></span><span class="name text-body">Trivia night at the community hall</span></div>
+    </div>
+    <p class="hint">Vote to see how the club is leaning. 6 have voted.</p>
+    <div class="foot"><button class="quiet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> 1 comment</button></div>
+    </article>
+
+    <p class="section-label">Decided</p>
+
+    <article class="card closed">
+    <div class="by"><span class="text-small muted">Demo Marcus asked, last week</span><button class="quiet">Report</button></div>
+    <h2 class="text-heading">Should season dues go up to $15?</h2>
+    <div class="decided"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg><div><p class="lbl text-small">Decided</p><p class="text-body">Yes, $15 a season, 11 votes to 4</p></div></div>
+    <div class="opts">
+    <div class="opt"><span class="name text-body">Yes, $15 a season</span><span class="tally"><svg width="70" height="22" viewBox="0 0 70 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16M22 3v16M1 16L26 5M36 3v16M42 3v16M48 3v16M54 3v16M33 16L58 5M64 3v16"/></svg><span class="count">11</span></span></div>
+    <div class="opt"><span class="name text-body">Keep it at $10</span><span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16M22 3v16"/></svg><span class="count">4</span></span></div>
+    </div>
+    <div class="foot"><button class="quiet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> 6 comments</button></div>
+    </article>
+    </div></div>
+  </div>
+  <!-- /usernode-spec-screens@1 -->
 </body>
 </html>

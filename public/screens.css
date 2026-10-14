@@ -1,0 +1,94 @@
+/* The screens the spec drew, carried over by the platform before the first
+   version was built (screen 1 is public/index.html's main screen; screen 2,
+   if any, its <template data-spec-screen="2">). Colours are the design kit's
+   tokens, rgb(var(--accent)), so they follow the light and the dark look. */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background: rgb(var(--ground));
+  color: rgb(var(--fg));
+  font-family: ui-rounded,"SF Pro Rounded",system-ui,sans-serif;
+}
+
+.app {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 16px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.text-title {font-size:1.75rem;line-height:2.25rem;font-weight:700}
+
+.text-heading {font-size:1.2rem;line-height:1.6rem;font-weight:600}
+
+.text-body {font-size:1rem;line-height:1.5rem}
+
+.text-small {font-size:.875rem;line-height:1.25rem}
+
+.muted {color:rgb(var(--muted))}
+
+.top {display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+.btn-primary,.btn-secondary {display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 14px;border-radius:10px;font:inherit;font-weight:600;font-size:1rem}
+
+.btn-primary {background:rgb(var(--accent));color:rgb(var(--on-accent));border:0}
+
+.btn-secondary {background:rgb(var(--surface));color:rgb(var(--fg));border:1px solid rgb(var(--line))}
+
+.quiet {background:none;border:0;color:rgb(var(--muted));font:inherit;font-size:.875rem;min-height:44px;padding:0 4px}
+
+.card {background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+
+.by {display:flex;justify-content:space-between;align-items:center}
+
+.opts {display:flex;flex-direction:column;border:1px solid rgb(var(--line));border-radius:10px;overflow:hidden}
+
+.opt {display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-top:1px solid rgb(var(--line));background:rgb(var(--surface))}
+
+.opt:first-child {border-top:0}
+
+.opt .name {flex:1}
+
+.mine {box-shadow:inset 3px 0 0 rgb(var(--accent))}
+
+.ring {width:22px;height:22px;border-radius:50%;border:2px solid rgb(var(--line));flex:none;display:flex;align-items:center;justify-content:center}
+
+.mine .ring {border-color:rgb(var(--accent));background:rgb(var(--accent))}
+
+.tally {display:flex;align-items:center;gap:6px;color:rgb(var(--tally))}
+
+.count {font-variant-numeric:tabular-nums;font-weight:600;min-width:1ch;text-align:right}
+
+.hint {font-size:.875rem;color:rgb(var(--muted))}
+
+.foot {display:flex;align-items:center;gap:4px;border-top:1px solid rgb(var(--line));padding-top:4px;margin-bottom:-8px}
+
+.foot .grow {flex:1}
+
+.thread {display:flex;flex-direction:column;gap:12px;padding-top:4px}
+
+.foot svg {vertical-align:-4px}
+
+.c {display:flex;flex-direction:column;gap:2px}
+
+.c b {font-weight:600}
+
+.say {display:flex;gap:8px}
+
+.field {flex:1;min-height:44px;border:1px solid rgb(var(--line));border-radius:10px;background:rgb(var(--surface));padding:8px 12px;font:inherit;color:rgb(var(--muted))}
+
+.decided {background:rgb(var(--decided-soft));border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;color:rgb(var(--fg))}
+
+.decided svg {color:rgb(var(--decided));flex:none}
+
+.decided .lbl {color:rgb(var(--decided));font-weight:600}
+
+.closed .tally {color:rgb(var(--muted))}
+
+.section-label {font-size:.875rem;font-weight:500;color:rgb(var(--muted));padding:0 4px;margin-bottom:-8px}
