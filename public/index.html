@@ -64,7 +64,7 @@
   })();
   </script>
   <title>Club Votes</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%237c3aed'/><circle cx='50' cy='50' r='18' fill='white'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='8' y='8' width='84' height='84' rx='22' fill='%231e5a48'/><path d='M30 53l15 15 27-32' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/></svg>">
   <!-- Tailwind, PRECOMPILED for this app (was cdn.tailwindcss.com's
        in-browser engine plus an inline tailwind.config here). The config
        moved to tailwind.config.js in the repo root; npm run build compiles
@@ -111,69 +111,73 @@
 <body class="min-h-screen bg-ground text-fg">
   <!-- Built from the design kit in styles/tailwind-input.css: colour tokens
        that are right in both looks, and components for buttons, fields,
-       lists, cards and data states. The real app keeps the kit; CLAUDE.md's
-       "## Design" says how. -->
-  <!-- (Named in prose on purpose: Tailwind compiles any class-name word in
-       these files, comments included, and the starter should ship only the
-       components its screen uses.) -->
-  <!-- usernode-spec-screens@1: the screens the spec drew, carried over by the platform as this
-       first version's starting point. Their styles are in public/screens.css.
-       Change them where behaviour needs it; do not redraw them. -->
+       lists, cards and data states. -->
+  <!-- usernode-spec-screens@1: the screen the spec drew, carried over by the
+       platform as this first version's starting point. Its styles are in
+       public/screens.css. The board is rendered by public/app.js from the
+       API into the same markup; the drawn rows come out before the first
+       request goes out. -->
   <div data-spec-screen="1">
-    <div><div class="app">
+    <div><main id="board" class="app">
     <header class="top">
     <h1 class="text-title">Club Votes</h1>
-    <button class="btn-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ask the club</button>
+    <button id="ask-btn" class="btn-primary" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ask the club</button>
     </header>
 
-    <p class="section-label">Open questions</p>
+    <p id="demo-note" class="text-small muted" hidden>Staging demo: made-up questions and people</p>
 
-    <article class="card">
-    <div class="by"><span class="text-small muted">You asked, 2 days ago</span><span class="text-small muted">9 votes</span></div>
-    <h2 class="text-heading">Where should we hold the spring kickoff?</h2>
-    <div class="opts">
-    <div class="opt mine"><span class="ring"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><span class="name text-body">Back room at Fern Street Library</span>
-    <span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16M22 3v16M1 16L26 5"/></svg><span class="count">5</span></span></div>
-    <div class="opt"><span class="ring"></span><span class="name text-body">Riverside pavilion</span>
-    <span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16"/></svg><span class="count">3</span></span></div>
-    <div class="opt"><span class="ring"></span><span class="name text-body">Juniper's Cafe upstairs</span>
-    <span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16"/></svg><span class="count">1</span></span></div>
+    <!-- Ask the club: a short form at the top. -->
+    <section id="ask-form" class="card fstack" hidden>
+    <h2 class="text-heading">Ask the club</h2>
+    <div class="fstack">
+    <label class="text-small muted" for="q-input">Question</label>
+    <input id="q-input" class="field" maxlength="200" placeholder="e.g. Where should we hold the spring kickoff?">
     </div>
-    <div class="foot"><button class="quiet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> 3 comments</button><span class="grow"></span><button class="btn-secondary text-small">Close vote</button><button class="quiet">Delete</button></div>
-    <div class="thread">
-    <div class="c"><span class="text-small"><b>Demo Ada</b> <span class="muted">yesterday</span></span><p class="text-body">The library room has the projector, so slides work there.</p></div>
-    <div class="c"><span class="text-small"><b>Demo Bram</b> <span class="muted">yesterday</span></span><p class="text-body">Pavilion is nicer if it stays dry, but it's a gamble in March.</p></div>
-    <div class="c"><span class="text-small"><b>You</b> <span class="muted">3 hours ago</span></span><p class="text-body">I'll book the library if it's still ahead on Friday.</p></div>
-    <div class="say"><input class="field" value="Add a comment"><button class="btn-secondary">Send</button></div>
+    <div class="fstack">
+    <span class="text-small muted" id="choices-label">Choices</span>
+    <div id="choice-fields" class="fstack"></div>
+    <button id="add-choice" class="quiet" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Add a choice</button>
     </div>
-    </article>
+    <p id="ask-error" class="text-small text-danger" hidden></p>
+    <div class="form-actions">
+    <button id="post-btn" class="btn-secondary" type="button">Post</button>
+    <button id="cancel-btn" class="quiet" type="button">Cancel</button>
+    </div>
+    </section>
 
-    <article class="card">
-    <div class="by"><span class="text-small muted">Demo Priya asked, 5 hours ago</span><button class="quiet">Report</button></div>
-    <h2 class="text-heading">What should our June outing be?</h2>
-    <div class="opts">
-    <div class="opt"><span class="ring"></span><span class="name text-body">Botanical garden walk</span></div>
-    <div class="opt"><span class="ring"></span><span class="name text-body">Pottery evening</span></div>
-    <div class="opt"><span class="ring"></span><span class="name text-body">Trivia night at the community hall</span></div>
-    </div>
-    <p class="hint">Vote to see how the club is leaning. 6 have voted.</p>
-    <div class="foot"><button class="quiet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> 1 comment</button></div>
-    </article>
+    <p class="section-label" id="open-label" hidden>Open questions</p>
+    <div id="open-list"></div>
 
-    <p class="section-label">Decided</p>
+    <p class="section-label" id="closed-label" hidden>Decided</p>
+    <div id="closed-list"></div>
 
-    <article class="card closed">
-    <div class="by"><span class="text-small muted">Demo Marcus asked, last week</span><button class="quiet">Report</button></div>
-    <h2 class="text-heading">Should season dues go up to $15?</h2>
-    <div class="decided"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg><div><p class="lbl text-small">Decided</p><p class="text-body">Yes, $15 a season, 11 votes to 4</p></div></div>
-    <div class="opts">
-    <div class="opt"><span class="name text-body">Yes, $15 a season</span><span class="tally"><svg width="70" height="22" viewBox="0 0 70 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16M22 3v16M1 16L26 5M36 3v16M42 3v16M48 3v16M54 3v16M33 16L58 5M64 3v16"/></svg><span class="count">11</span></span></div>
-    <div class="opt"><span class="name text-body">Keep it at $10</span><span class="tally"><svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 3v16M10 3v16M16 3v16M22 3v16"/></svg><span class="count">4</span></span></div>
+    <!-- Loading, empty and error: exactly one shows at a time. -->
+    <div id="loading">
+    <div class="card fstack">
+    <div class="by"><div class="skeleton h-4 w-1/3"></div><div class="skeleton h-4 w-1/6"></div></div>
+    <div class="skeleton h-6 w-3/4"></div>
+    <div class="opts"><div class="opt"><div class="skeleton h-4 w-1/2"></div></div><div class="opt"><div class="skeleton h-4 w-2/5"></div></div></div>
     </div>
-    <div class="foot"><button class="quiet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> 6 comments</button></div>
-    </article>
-    </div></div>
+    <div class="card fstack">
+    <div class="by"><div class="skeleton h-4 w-1/3"></div><div class="skeleton h-4 w-1/6"></div></div>
+    <div class="skeleton h-6 w-2/3"></div>
+    <div class="opts"><div class="opt"><div class="skeleton h-4 w-3/5"></div></div><div class="opt"><div class="skeleton h-4 w-1/2"></div></div></div>
+    </div>
+    </div>
+    <div id="empty" class="state-empty" hidden>
+    <p class="text-heading">No questions yet.</p>
+    <p class="text-body muted">Post the first thing the club needs to decide.</p>
+    <button id="empty-ask" class="btn-primary" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ask the club</button>
+    <p id="empty-guest" class="text-small muted" hidden>Sign in to Homeroom to ask the club something.</p>
+    </div>
+    <div id="error" class="state-error" hidden>
+    <p class="text-heading">The questions could not be loaded</p>
+    <p class="text-body muted">Nothing you have posted is lost. Check your connection and try again.</p>
+    <button id="retry" class="btn-secondary" type="button">Retry</button>
+    </div>
+    </main></div>
   </div>
   <!-- /usernode-spec-screens@1 -->
+  <script src="/app.js"></script>
 </body>
 </html>

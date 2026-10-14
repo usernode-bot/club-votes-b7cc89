@@ -41,7 +41,7 @@ body {
 
 .btn-secondary {background:rgb(var(--surface));color:rgb(var(--fg));border:1px solid rgb(var(--line))}
 
-.quiet {background:none;border:0;color:rgb(var(--muted));font:inherit;font-size:.875rem;min-height:44px;padding:0 4px}
+.quiet {background:none;border:0;color:rgb(var(--muted));font:inherit;font-size:.875rem;min-height:44px;padding:0 4px;display:inline-flex;align-items:center;gap:6px}
 
 .card {background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
 
@@ -49,7 +49,7 @@ body {
 
 .opts {display:flex;flex-direction:column;border:1px solid rgb(var(--line));border-radius:10px;overflow:hidden}
 
-.opt {display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-top:1px solid rgb(var(--line));background:rgb(var(--surface))}
+.opt {display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-top:1px solid rgb(var(--line));background:rgb(var(--surface));text-align:left;font:inherit}
 
 .opt:first-child {border-top:0}
 
@@ -92,3 +92,10 @@ body {
 .closed .tally {color:rgb(var(--muted))}
 
 .section-label {font-size:.875rem;font-weight:500;color:rgb(var(--muted));padding:0 4px;margin-bottom:-8px}
+
+/* Layout helpers used by the ask form. */
+.fstack {display:flex;flex-direction:column;gap:8px}
+
+.frow {display:flex;align-items:center;gap:8px}
+
+.form-actions {display:flex;align-items:center;justify-content:flex-start;gap:8px}

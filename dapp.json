@@ -7,5 +7,26 @@
   "governance": {
     "preset": "you_or_the_group"
   },
-  "tests": []
+  "tests": [
+    {
+      "id": "board.default",
+      "name": "Board renders",
+      "path": "/?demo=1",
+      "expectSelector": "#board",
+      "visual": true,
+      "impact": ["public/**", "server.js", "styles/**"]
+    },
+    {
+      "id": "board.demo-note",
+      "name": "Staging demo note shows",
+      "path": "/?demo=1",
+      "expectText": "Staging demo: made-up questions and people"
+    },
+    {
+      "id": "board.decided",
+      "name": "Decided section shows",
+      "path": "/?demo=1",
+      "expectText": "Decided"
+    }
+  ]
 }
