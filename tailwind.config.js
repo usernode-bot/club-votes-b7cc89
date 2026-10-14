@@ -42,6 +42,9 @@ module.exports = {
   // re-theme the app, change the token VALUES in styles/tailwind-input.css
   // and keep these names.
   theme: {
+    fontFamily: {
+      sans: ['ui-rounded', 'SF Pro Rounded', 'system-ui', 'sans-serif'],
+    },
     extend: {
       colors: {
         ground: token('ground'), // the page
@@ -55,6 +58,9 @@ module.exports = {
         danger: token('danger'),
         'on-danger': token('on-danger'),
         focus: token('focus'), // the keyboard focus ring
+        decided: token('decided'), // the closed-vote ribbon
+        'decided-soft': token('decided-soft'), // behind the ribbon line
+        tally: token('tally'), // chalk tally marks beside a choice
       },
       // The type scale: four sizes, and nothing in between.
       fontSize: {

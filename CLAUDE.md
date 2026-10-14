@@ -95,24 +95,28 @@ tables you've marked private), etc.
 
 ## About Club Votes
 
-A place for your club to decide things together
-
-_(add a sentence or two more of product context here so Claude Code has a
-shared understanding of what this app is for)_
+A place for your club to decide things together — a decision board, not
+a chat. Anyone posts a question with two or more choices; every member
+votes by tapping a choice (one vote each, changeable until the person
+who asked closes the vote); comments under each question carry the
+discussion. The author closes the vote to show what won, and closed
+questions move down to "Decided". Results stay hidden until you vote
+yourself (or the vote is closed), so nobody is swayed by a running
+tally. Guests can read but not act.
 
 ## Design
 
 This app's look. The first real version fills in the blanks; every later
 change follows it, and updates it when a request changes the look on purpose.
 
-- **Palette:** _(name the accent, any second colour and the neutrals, e.g.
-  "accent: tomato red; second: basil green; neutrals: warm greys")_
-- **Signature element:** _(the one thing on screen drawn from this app's
-  subject, which no other app would have)_
-- **Type scale:** `text-title`, `text-heading`, `text-body`, `text-small`
-  _(change their sizes in `tailwind.config.js` if you must, not their number)_
-- **One fixed look:** _(only for an app drawn as its own scene, such as a
-  game: which look, and why. Otherwise delete this line.)_
+- **Palette:** accent board green (light 30 90 72, dark 120 196 165);
+  decided ochre for closed votes (light 142 92 12, dark 230 180 90);
+  chalkboard sage neutrals for ground/surface/raised/line.
+- **Signature element:** chalk tally marks — four upright strokes
+  crossed by a fifth, one group per five votes — drawn as inline SVG
+  beside each choice count. In decided cards the tallies turn muted.
+- **Type scale:** `text-title`, `text-heading`, `text-body`, `text-small`,
+  set in `tailwind.config.js` on a `ui-rounded` system stack.
 
 The kit is in `styles/tailwind-input.css`: colour tokens with a light and
 a dark value (named in `tailwind.config.js`), and a few components
@@ -140,6 +144,11 @@ Re-theme by changing the token values there, keeping every text pair at
 
 ## App-specific conventions
 
-_(optional — e.g. "all currency values stored as integer cents, not
-floats"; "the `posts` table is append-only"; "avoid adding new
-dependencies"; etc.)_
+- Votes are one row per (decision, user), changed by upsert — never
+  counted by insert history.
+- Demo rows carry `is_demo = true` and are shown only by `/?demo=1` on
+  staging; the plain route never returns them. `demo_key` (unique) keeps
+  the seeding idempotent. The `reports` table is marked
+  `staging:private` — it never leaves the server via the API.
+- No new dependencies; the API keeps everything a signed-in viewer may
+  see inside `decisionToJson`.
